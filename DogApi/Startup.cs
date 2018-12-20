@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using DogApi.Models;
+using DogApi.Service_Layer;
+using Microsoft.EntityFrameworkCore;
 
 namespace DogApi
 {
@@ -25,7 +28,12 @@ namespace DogApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Opretter en memory database
+            services.AddDbContext<DogContext>(opt =>
+                opt.UseInMemoryDatabase("DogLists"));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IDogService, DogService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +48,8 @@ namespace DogApi
                 app.UseHsts();
             }
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
