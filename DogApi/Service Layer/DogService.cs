@@ -9,6 +9,8 @@ namespace DogApi.Service_Layer
     public interface IDogService
     {
         List<DogList> GetAllDogs();
+        void AddDog(string breed, DogItem dog);
+        //List<string> GetBreeds();
         //DogItem GetRandomDog();
         //DogItem GetRandomDogByBreed();
         //DogList GetDogByBreed(string breed);
@@ -35,5 +37,18 @@ namespace DogApi.Service_Layer
             return _context.DogLists.ToList();
         }
 
+        public void AddDog(string breed, DogItem dog)
+        {
+            var foundbreed = _context.DogLists.Where(obj => obj.Breed == breed);
+
+            if (foundbreed == null)
+            {
+                _context.DogLists.Add(new DogList { Breed = breed, Dogs = new List<DogItem> { dog } });
+            }
+            else
+            {
+                
+            }
+        }
     }
 }

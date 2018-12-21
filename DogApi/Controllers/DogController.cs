@@ -28,6 +28,15 @@ namespace DogApi.Controllers
             return _service.GetAllDogs();
         }
 
-
+        /// <summary>
+        /// Deletes a specific TodoItem.
+        /// </summary>
+        /// <param name="id"></param>   
+        [HttpPost]
+        public ActionResult<DogItem> AddDog(string breed, DogItem dog)
+        {
+            _service.AddDog(breed, dog);
+            return CreatedAtAction("GetTodoItem", new { id = dog.Id }, dog);
+        }
     }
 }
