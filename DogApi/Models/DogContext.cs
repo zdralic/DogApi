@@ -14,6 +14,6 @@ namespace DogApi.Models
 
         }
 
-        public DbSet<DogList> DogLists { get; set; }
+        public DbSet<DogItem> DogList { get; set; }
     }
 }

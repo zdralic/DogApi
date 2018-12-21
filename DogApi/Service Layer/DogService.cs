@@ -8,10 +8,11 @@ namespace DogApi.Service_Layer
 {
     public interface IDogService
     {
-        List<DogList> GetAllDogs();
-        void AddDog(string breed, DogItem dog);
-        //List<string> GetBreeds();
-        //DogItem GetRandomDog();
+        List<DogItem> GetAllDogs();
+        DogItem GetDog(long id);
+        void AddDog(DogItem dog);
+        DogItem GetRandomDog(string breed);
+        void DeleteDog(long id);
         //DogItem GetRandomDogByBreed();
         //DogList GetDogByBreed(string breed);
 
@@ -19,36 +20,57 @@ namespace DogApi.Service_Layer
 
     public class DogService : IDogService
     {
+        private static Random random = new Random();
         private readonly DogContext _context;
 
         public DogService(DogContext context)
         {
             _context = context;
 
-            if (_context.DogLists.Count() == 0)
+            if (_context.DogList.Count() == 0)
             {
-                _context.DogLists.Add(new DogList { Breed = "Labrador", Dogs = new List<DogItem> { new DogItem { Path = @"https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjLz__htq7fAhXHLFAKHXVQBzMQjRx6BAgBEAU&url=https%3A%2F%2Fwww.akc.org%2Fdog-breeds%2Flabrador-retriever%2F&psig=AOvVaw2vxAb-bs07C_8vapiNvs-9&ust=1545395973798237" } } });
+                _context.DogList.Add(new DogItem { Breed = "Labrador", Path = @"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12231410/Labrador-Retriever-On-White-01.jpg" });
+                _context.DogList.Add(new DogItem { Breed = "Pitbull", Path = @"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12231410/Labrador-Retriever-On-White-01.jpg" });
                 _context.SaveChanges();
             }
         }
 
-        public List<DogList> GetAllDogs()
+        public List<DogItem> GetAllDogs()
         {
-            return _context.DogLists.ToList();
+            return _context.DogList.ToList();
         }
 
-        public void AddDog(string breed, DogItem dog)
+        public DogItem GetDog(long id)
         {
-            var foundbreed = _context.DogLists.Where(obj => obj.Breed == breed);
+            return _context.DogList.Find(id);
+        }
 
-            if (foundbreed == null)
+        public void AddDog(DogItem dog)
+        {
+            _context.DogList.Add(dog);
+            _context.SaveChanges();
+        }
+
+        public DogItem GetRandomDog(string breed)
+        {
+            if (breed == "Random")
             {
-                _context.DogLists.Add(new DogList { Breed = breed, Dogs = new List<DogItem> { dog } });
+                var dogItem = _context.DogList.ToList()[random.Next(_context.DogList.Count())];
+                return dogItem;
             }
             else
             {
-                
+                List<DogItem> filteredDogs = _context.DogList.Where(obj => obj.Breed == breed).ToList();
+                var dogItem = filteredDogs[random.Next(filteredDogs.Count())];
+                return dogItem;
             }
+        }
+
+        public void DeleteDog(long id)
+        {
+            var dog = GetDog(id);
+            _context.DogList.Remove(dog);
+            _context.SaveChanges();
         }
     }
 }

@@ -7,7 +7,8 @@ namespace DogApi.Models
 {
     public class DogItem
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Path { get; set; }
+        public string Breed { get; set; }
     }
 }

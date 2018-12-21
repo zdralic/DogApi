@@ -23,20 +23,50 @@ namespace DogApi.Controllers
 
         // GET: api/Dog
         [HttpGet]
-        public ActionResult<IEnumerable<DogList>> GetTodoItems()
+        public ActionResult<IEnumerable<DogItem>> GetDogItems()
         {
             return _service.GetAllDogs();
         }
 
+        [HttpGet("{breed}")]
+        public ActionResult<DogItem> GetRandomDogItem(string breed)
+        {
+            return _service.GetRandomDog(breed);
+        }
+
+        //Get: api/dog/5
+        [HttpGet("{id}")]
+        public ActionResult<DogItem> GetDogItem(long id)
+        {
+            var dogItem = _service.GetDog(id);
+            if (dogItem == null)
+            {
+                return NotFound();
+            }
+            return dogItem;
+        }
+
         /// <summary>
-        /// Deletes a specific TodoItem.
+        /// Adds a dog
         /// </summary>
         /// <param name="id"></param>   
         [HttpPost]
-        public ActionResult<DogItem> AddDog(string breed, DogItem dog)
+        public ActionResult<DogItem> AddDog(DogItem dog)
         {
-            _service.AddDog(breed, dog);
-            return CreatedAtAction("GetTodoItem", new { id = dog.Id }, dog);
+            _service.AddDog(dog);
+            return CreatedAtAction("GetDogItem", new { id = dog.Id }, dog);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<DogItem> DeleteDog(long id)
+        {
+            var dog = _service.GetDog(id);
+            if (dog == null)
+            {
+                return NotFound();
+            }
+            _service.DeleteDog(id);
+            return dog;
         }
     }
 }
