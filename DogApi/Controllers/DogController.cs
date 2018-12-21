@@ -21,6 +21,11 @@ namespace DogApi.Controllers
             _service = service;
         }
 
+
+        /// <summary>
+        /// Gets all dogs
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Dog
         [HttpGet]
         public ActionResult<IEnumerable<DogItem>> GetDogItems()
@@ -28,12 +33,52 @@ namespace DogApi.Controllers
             return _service.GetAllDogs();
         }
 
+        /// <summary>
+        /// Gets a random dog from a breed
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     
+        ///     Get /Dog/specificbreed
+        ///     {
+        ///         "breed": "Labrador"
+        ///     }
+        ///     
+        ///     Get /Dog/Random
+        ///     {
+        ///         "breed": "Random"
+        ///     }
+        /// </remarks>
+        /// <param name="breed"></param>
+        /// <returns></returns>
         [HttpGet("{breed}")]
         public ActionResult<DogItem> GetRandomDogItem(string breed)
         {
             return _service.GetRandomDog(breed);
         }
 
+        /// <summary>
+        /// Gets a dog from a dogs ID
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Get /Dog/id
+        ///     {
+        ///         "id": 21
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns>
+        ///     Dog object
+        ///     {
+        ///         "id": 21
+        ///         "breed": "Labrador"
+        ///         "path": "Imgpath"
+        ///     }
+        /// 
+        /// </returns>
         //Get: api/dog/5
         [HttpGet("{id}")]
         public ActionResult<DogItem> GetDogItem(long id)
@@ -49,7 +94,17 @@ namespace DogApi.Controllers
         /// <summary>
         /// Adds a dog
         /// </summary>
-        /// <param name="id"></param>   
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     Post /Dog
+        ///     {
+        ///         "breed": "Labrador",
+        ///         "path": "imgurl"
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="dog"></param>
         [HttpPost]
         public ActionResult<DogItem> AddDog(DogItem dog)
         {
@@ -57,6 +112,17 @@ namespace DogApi.Controllers
             return CreatedAtAction("GetDogItem", new { id = dog.Id }, dog);
         }
 
+        /// <summary>
+        /// Deletes a dog from the list
+        /// </summary>
+        /// <remarks>
+        ///     Delete /Dog/id
+        ///     {
+        ///     
+        ///     }
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<DogItem> DeleteDog(long id)
         {

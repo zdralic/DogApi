@@ -32,7 +32,7 @@ function getData() {
             $.each(data, function (key, item) {
                 const tr = $("<tr></tr>")
                     .append($("<td></td>").text(item.breed))
-                    .append($("<td></td>").append($('<a target="_blank" href="' + item.path + '">Link<a/>')))                    
+                    .append($("<td></td>").append($('<a target="_blank" href="' + item.path + '">Link<a/>')))
                     .append(
                         $("<td></td>").append(
                             $("<button>Delete</button>").on("click", function () {
@@ -76,6 +76,22 @@ function deleteItem(id) {
         type: "DELETE",
         success: function (result) {
             getData();
+        }
+    });
+}
+
+function getRandomItem() {
+    $.ajax({
+        type: "Get",
+        accepts: "application/json",
+        url: uri + "/" + $("#random-breed").val(),
+        contentType: "application/json",
+        data: JSON.stringify($("#random-breed").val()),
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("Something went wrong!");
+        },
+        success: function (item) {
+            $("#random-img").html($('<img src="' + item.path + '"/>'));
         }
     });
 }

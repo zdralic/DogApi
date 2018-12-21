@@ -31,11 +31,20 @@
         <table>
             <tr>
                 <th>Breed</th>
-                <th>Img path</th>                
+                <th>Img path</th>
                 <th></th>
             </tr>
             <tbody id="dogs"></tbody>
         </table>
+        <div style="text-align: center;">
+            <label>Enter breed to find a random img or enter Random to find a random img between all breeds</label>
+            <br />
+            <input type="text" id="random-breed" placeholder="Enter breed to find a random img" />
+            <button onclick="getRandomItem()">Random</button>
+            <div id="random-img">
+
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
